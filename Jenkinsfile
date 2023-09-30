@@ -8,7 +8,6 @@ pipeline {
             steps {
                script {
                 sh "mvn install"
-                sh "mv target/*.jar target/spring-boot-2-hello-world-1.0.2-SNAPSHOT-${BUILD_NUMBER}.jar"
                }
             }
         }
