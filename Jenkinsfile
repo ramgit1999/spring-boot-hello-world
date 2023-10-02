@@ -33,6 +33,7 @@ pipeline {
                 }
             }
         }
+
         stage("Quality Gate") {
             steps {
               timeout(time: 2, unit: 'MINUTES') {
@@ -40,5 +41,27 @@ pipeline {
               }
             }
         }
-    }
-}
+        stage("Upload Artifacts"){
+            steps{
+                
+                rtServer (
+                        id: 'jfrog-server',
+                        url: 'http://192.168.29.116:8082/artifactory/',
+                        // If you're using username and password:
+                        username: 'admin',
+                        password: 'Jfrog@123',
+                        timeout: 300
+                )
+                rtUpload (
+                    serverId: 'jfrog-server',
+                    spec: '''{
+                        "files": [
+                            {
+                            "pattern": "target/*.jar",
+                            "target": "example-repo-local/spring-boot-hello-world/"
+                            }
+                        ]
+                    }''',
+                )    
+            }
+        } 
