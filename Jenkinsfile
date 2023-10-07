@@ -77,8 +77,42 @@ pipeline {
             }
 
         }
+        stage("Deploy - UAT"){
+            steps {
+
+                sshagent(['ssh-creds']) {
+                sh """      
+                    scp  -o StrictHostKeyChecking=no   target/*.jar    cloud_user@683b06656b3c.mylabserver.com:/home/cloud_user
+                """
+            }
+            }
+
+        }
+
+        stage("Deploy - Prod"){
+            input{
+                 message "Do you want to proceed for production deployment?"
+            }
+
+            steps {
+
+                sshagent(['ssh-creds']) {
+                sh """      
+                    scp    -o StrictHostKeyChecking=no  target/*.jar    cloud_user@683b06656b3c.mylabserver.com:/home/cloud_user
+                """
+            }
+            }
+
+        }
+    }
+    post {
+        always {
+             cleanWs()
+        }
     }
 }
+
+
         
 
 
