@@ -47,10 +47,10 @@ pipeline {
                 
                 rtServer (
                         id: 'jfrog-server',
-                        url: 'http://683b06656b2c.mylabserver.com/artifactory/',
+                        url: 'http://192.168.29.116:8082//artifactory/',
                         // If you're using username and password:
                         username: 'admin',
-                        password: 'Admin@123',
+                        password: 'Jfrog@123',
                         timeout: 300
                 )
                 rtUpload (
