@@ -41,29 +41,44 @@ pipeline {
               }
             }
         }
-        stage("Upload Artifacts"){
-            steps{
+        // stage("Upload Artifacts"){
+        //     steps{
                 
-                rtServer (
-                        id: 'jfrog-server',
-                        url: 'http://192.168.29.116:8082/artifactory/',
-                        // If you're using username and password:
-                        username: 'admin',
-                        password: 'Jfrog@123',
-                        timeout: 300
-                )
-                rtUpload (
-                    serverId: 'jfrog-server',
-                    spec: '''{
-                        "files": [
-                            {
-                            "pattern": "target/*.jar",
-                            "target": "example-repo-local/spring-boot-hello-world/"
-                            }
-                        ]
-                    }''',
-                )    
+        //         rtServer (
+        //                 id: 'jfrog-server',
+        //                 url: 'http://192.168.29.116:8082/artifactory/',
+        //                 If you're using username and password:
+        //                 username: 'admin',
+        //                 password: 'Jfrog@123',
+        //                 timeout: 300
+        //         )
+        //         rtUpload (
+        //             serverId: 'jfrog-server',
+        //             spec: '''{
+        //                 "files": [
+        //                     {
+        //                     "pattern": "target/*.jar",
+        //                     "target": "example-repo-local/spring-boot-hello-world/"
+        //                     }
+        //                 ]
+        //             }'''
+        //         )
+
+                stage("Deploy - Dev"){
+                    steps {
+                        sshagent(['ssh-creds']) {
+                           sh """      
+                               scp   -o StrictHostKeyChecking=no  target/*.jar    cloud_user@683b06656b2c.mylabserver.com:/home/cloud_user
+                            """
+                        }
+                   }
+                } 
             }
         }
     }
-} 
+
+}   
+        
+
+
+
